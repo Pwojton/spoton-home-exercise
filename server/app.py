@@ -20,6 +20,5 @@ def get_recipes():
     return recipes
 
 
-
 if __name__ == '__main__':
     app.run(debug=True)
