@@ -39,7 +39,6 @@ const App: React.FC = () => {
           label="Ingredient"
           type="text"
           autoComplete="off"
-          className="ingredient-input"
           value={currentIngredient}
           onChange={handleInputChange}
         />
@@ -56,16 +55,24 @@ const App: React.FC = () => {
         <div className="ingredient">{ingredients.join(", ")}</div>
       </div>
       {ingredients.length > 0 && (
-        <>
+        <Box sx={{ mt: 6 }}>
+          <TextField
+            id="recipes-number-input"
+            label="recipes number"
+            type="text"
+            autoComplete="off"
+            sx={{ width: "110px" }}
+            inputProps={{ type: "number" }}
+          />
           <Button
             variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            sx={{ mt: 6 }}
+            size="large"
+            sx={{ mt: 0.8, ml: 4 }}
+            onClick={handleAddIngredient}
           >
             Submit
           </Button>
-        </>
+        </Box>
       )}
     </div>
   );
