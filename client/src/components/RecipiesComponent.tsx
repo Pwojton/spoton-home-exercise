@@ -7,17 +7,9 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
-
 import React from "react";
+import type { Recipe } from "../types";
 
-interface Recipe {
-  name: string;
-  ingredients_present: string[];
-  ingredients_missing: string[];
-  calories: number;
-  carbs: number;
-  proteins: number;
-}
 interface RecipesComponentProps {
   recipes: Recipe[];
 }
@@ -31,7 +23,7 @@ const Recipe: React.FC<Recipe> = ({
   proteins,
 }) => {
   return (
-    <Paper variant="outlined" sx={{ maxWidth: 320, p: 2, mb: 2 }}>
+    <Paper variant="outlined" sx={{ maxWidth: 320, p: 2, m: 2 }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
         {name}
       </Typography>
@@ -73,7 +65,13 @@ const Recipe: React.FC<Recipe> = ({
 
 const RecipesComponent: React.FC<RecipesComponentProps> = ({ recipes }) => {
   return (
-    <div>
+    <Box
+      sx={{
+        display: "inline-flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+      }}
+    >
       {recipes &&
         recipes.map((recipe) => (
           <Recipe
@@ -86,7 +84,7 @@ const RecipesComponent: React.FC<RecipesComponentProps> = ({ recipes }) => {
             proteins={recipe.proteins}
           />
         ))}
-    </div>
+    </Box>
   );
 };
 
