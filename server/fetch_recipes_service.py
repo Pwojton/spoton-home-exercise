@@ -31,6 +31,9 @@ def format_recipes(recipes):
         
         proteins, carbs, calories = fetch_nutrients(ingredients_missing + ingredients_present)
         
+        ingredients_present = [ingredient['name'] for ingredient in recipe['usedIngredients']]
+        ingredients_missing = [ingredient['name'] for ingredient in recipe['missedIngredients']]
+        
         formatted_recipe = {
             "name": recipe['title'],
             "ingredients_present": ingredients_present,
