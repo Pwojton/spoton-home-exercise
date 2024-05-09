@@ -1,14 +1,5 @@
 import axios from "axios";
 
-interface Recipe {
-  name: string;
-  ingredients_present: string[];
-  ingredients_missing: string[];
-  calories: number;
-  carbs: number;
-  proteins: number;
-}
-
 export const getRecipes = async (
   ingredients: string[],
   recipesNumber: number
@@ -21,12 +12,8 @@ export const getRecipes = async (
       },
     });
 
-    if (response.data === undefined) {
-      return new Error("Recipes are undefined");
-    }
-
     return response.data;
   } catch (error) {
-    return new Error("Error making the request");
+    return [];
   }
 };

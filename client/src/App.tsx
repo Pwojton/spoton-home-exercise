@@ -8,15 +8,6 @@ import { IngredientsForm } from "./components/IngredientsForm";
 import { getRecipes } from "./api";
 import RecipesComponent from "./components/RecipiesComponent";
 
-interface Recipe {
-  name: string;
-  ingredients_present: string[];
-  ingredients_missing: string[];
-  calories: number;
-  carbs: number;
-  proteins: number;
-}
-
 const App: React.FC = () => {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [currentIngredient, setCurrentIngredient] = useState<string>("");
@@ -71,6 +62,7 @@ const App: React.FC = () => {
           You have reached the maximum number of ingredients.
         </Box>
       )}
+
       <IngredientsList
         ingredients={ingredients}
         handleDeleteIngredient={handleDeleteIngredient}
@@ -84,8 +76,11 @@ const App: React.FC = () => {
           />
           <Box sx={{ mt: 8 }}>
             {isLoading && <h4>Loading...</h4>}
-            {isError && <h4>Error fetching the data</h4>}
-            <RecipesComponent recipes={recipes} />
+            {isError ? (
+              <h4>Error fetching the data</h4>
+            ) : (
+              <RecipesComponent recipes={recipes || []} />
+            )}
           </Box>
         </>
       )}
