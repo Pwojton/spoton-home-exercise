@@ -1,14 +1,37 @@
 import React, { useState, ChangeEvent } from "react";
 import Box from "@mui/material/Box";
+import { useQuery } from "@tanstack/react-query";
 import "./styles/App.css";
 import { IngredientsList } from "./components/IngredientsList";
 import { IngredientsNumberForm } from "./components/IngredientsNumberForm";
 import { IngredientsForm } from "./components/IngredientsForm";
+import { getRecipes } from "./api";
+import RecipesComponent from "./components/RecipiesComponent";
+
+interface Recipe {
+  name: string;
+  ingredients_present: string[];
+  ingredients_missing: string[];
+  calories: number;
+  carbs: number;
+  proteins: number;
+}
 
 const App: React.FC = () => {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [currentIngredient, setCurrentIngredient] = useState<string>("");
   const [recipesNumber, setRecipesNumber] = useState<number>(1);
+
+  const {
+    data: recipes,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["getRecipes", ingredients, recipesNumber],
+    queryFn: () => getRecipes(ingredients, recipesNumber),
+    enabled: false,
+  });
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setCurrentIngredient(event.target.value);
@@ -34,9 +57,6 @@ const App: React.FC = () => {
       prevIngredients.filter((ingredient) => ingredient !== ingredientToDelete)
     );
   };
-  const handleSubmit = (): void => {
-    console.log("submitting");
-  };
 
   return (
     <div className="App">
@@ -56,11 +76,18 @@ const App: React.FC = () => {
         handleDeleteIngredient={handleDeleteIngredient}
       />
       {ingredients.length > 0 && (
-        <IngredientsNumberForm
-          recipesNumber={recipesNumber}
-          setRecipesNumber={setRecipesNumber}
-          handleSubmit={handleSubmit}
-        />
+        <>
+          <IngredientsNumberForm
+            recipesNumber={recipesNumber}
+            setRecipesNumber={setRecipesNumber}
+            handleSubmit={() => refetch()}
+          />
+          <Box sx={{ mt: 8 }}>
+            {isLoading && <h4>Loading...</h4>}
+            {isError && <h4>Error fetching the data</h4>}
+            <RecipesComponent recipes={recipes} />
+          </Box>
+        </>
       )}
     </div>
   );
